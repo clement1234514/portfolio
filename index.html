@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clement – Student & Entwickler</title>
+  <style>
+    /* ===== RESET & BASE ===== */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0b0d14;
+      --bg-card: #131620;
+      --bg-elevated: #1a1e2a;
+      --border: #262a36;
+      --text: #e2e4ea;
+      --text-muted: #8a8f9e;
+      --accent: #7c6df0;
+      --accent-hover: #9487f5;
+      --accent-glow: rgba(124, 109, 240, 0.25);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      --max-w: 900px;
+      --nav-h: 64px;
+      --transition: 0.25s ease;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: var(--nav-h);
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    a:hover {
+      color: var(--accent-hover);
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* ===== UTILITY ===== */
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: 80px 0;
+    }
+
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      letter-spacing: -0.02em;
+    }
+    .section-sub {
+      color: var(--text-muted);
+      margin-bottom: 44px;
+      font-size: 0.95rem;
+    }
+
+    /* ===== NAVIGATION ===== */
+    nav {
+      position: fixed;
+      inset: 0 0 auto;
+      height: var(--nav-h);
+      background: rgba(11, 13, 20, 0.78);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+    }
+
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .nav-logo {
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+    .nav-logo span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width var(--transition);
+    }
+    .nav-links a:hover {
+      color: var(--text);
+    }
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* Mobile menu toggle – hidden on desktop */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: var(--nav-h);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -20%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-start;
+      gap: 48px;
+    }
+
+    .hero-profile {
+      flex-shrink: 0;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--accent);
+      box-shadow: 0 0 40px var(--accent-glow);
+    }
+
+    .hero-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 50px;
+      background: rgba(124, 109, 240, 0.12);
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      border: 1px solid rgba(124, 109, 240, 0.2);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 6vw, 3.6rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+    .hero h1 span {
+      color: var(--accent);
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 540px;
+      margin-bottom: 32px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 34px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all var(--transition);
+      border: none;
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px var(--accent-glow);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      margin-left: 12px;
+    }
+    .btn-outline:hover {
+      background: var(--bg-card);
+      border-color: var(--text-muted);
+      box-shadow: none;
+      transform: translateY(-2px);
+    }
+
+    /* ===== ABOUT ===== */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    .about-text p + p {
+      margin-top: 16px;
+    }
+    .about-text p {
+      color: var(--text-muted);
+    }
+
+    .about-highlights {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .highlight-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .highlight-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+    .highlight-card .icon {
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+    }
+    .highlight-card h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .highlight-card p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ===== SKILLS ===== */
+    .skills-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .skill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 50px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: all var(--transition);
+    }
+    .skill-badge:hover {
+      border-color: var(--accent);
+      background: rgba(124, 109, 240, 0.06);
+      transform: translateY(-2px);
+    }
+
+    /* ===== PROJECTS ===== */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: border-color var(--transition), transform var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+    .project-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+
+    .project-card .tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .project-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .project-card p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      flex: 1;
+      margin-bottom: 16px;
+    }
+
+    .project-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+    .project-tech span {
+      padding: 4px 12px;
+      border-radius: 50px;
+      background: var(--bg-elevated);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .project-link {
+      font-weight: 600;
+      font-size: 0.88rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      align-self: flex-start;
+    }
+    .project-link:hover {
+      gap: 10px;
+    }
+
+    /* ===== CONTACT / FOOTER ===== */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 0 32px;
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-inner p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+    }
+    .footer-links a {
+      color: var(--text-muted);
+      font-weight: 500;
+      font-size: 0.88rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .section {
+        padding: 56px 0;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+      .about-highlights {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 28px;
+      }
+      .hero-profile {
+        width: 150px;
+        height: 150px;
+      }
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .btn-outline {
+        margin-left: 0;
+        margin-top: 12px;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: var(--nav-h);
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: var(--bg);
+        border-bottom: 1px solid var(--border);
+        padding: 16px 24px;
+        gap: 16px;
+        transform: translateY(-110%);
+        opacity: 0;
+        transition: all 0.3s ease;
+        pointer-events: none;
+      }
+      .nav-links.open {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 0 16px;
+      }
+
+      .hero {
+        min-height: 90vh;
+      }
+
+      .hero-badge {
+        font-size: 0.75rem;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav>
+    <div class="container">
+      <a href="#" class="nav-logo"><span>Clement Yipdi</span></a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menü öffnen">&#9776;</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about">Über mich</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projekte</a></li>
+        <li><a href="#contact">Kontakt</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="container hero-content">
+      <img src="clement.jpg" alt="Clement" class="hero-profile" />
+      <div>
+        <span class="hero-badge">Verfügbar für Praktikum & Werkstudium</span>
+        <h1>Hi, ich bin <span>Clement</span> –<br />Student & Entwickler</h1>
+        <p>
+          Informatik-Student mit Leidenschaft für Full-Stack-Webentwicklung,
+          Datenvisualisierung und KI. Ich verbinde analytische Problemlösungskompetenz aus der Softwareentwicklung
+          mit moderner Technologie.
+        </p>
+        <div>
+          <a href="#projects" class="btn">Meine Projekte ansehen</a>
+          <a href="#contact" class="btn btn-outline">Kontakt</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ÜBER MICH ===== -->
+  <section class="section" id="about">
+    <div class="container">
+      <h2 class="section-title">Über mich</h2>
+      <p class="section-sub">Wer ich bin und was mich antreibt</p>
+
+      <div class="about-grid">
+        <div class="about-text">
+          <p>
+            Ich studiere Informatik im
+            <strong>4. Semester</strong> und habe mich früh auf
+            Full-Stack-Entwicklung und Datenvisualisierung interressiert.
+            In meinem Studium arbeite ich intensiv mit
+            <strong>Java, TypeScript, Next.js, Datenbanken</strong> sowie
+            <strong>Agilen Methoden</strong> – insbesondere Jira.
+          </p>
+          <p>
+            Was mich antreibt? Ich will Produkte bauen, die wirklich
+            einen Mehrwert liefern – von der Idee bis zum Deployment.
+            Ob eine interaktive Datenkarte mit D3.js, eine
+            E-Commerce-Plattform mit Next.js oder ein Java-basiertes
+            Bestellsystem: Ich liebe es, komplexe Zusammenhänge in
+            sauberen Code zu übersetzen. Neben dem Studium bilde ich
+            mich in Cloud-Themen (Vercel, AWS) und modernen
+            Frontend-Frameworks weiter.
+          </p>
+        </div>
+
+        <div class="about-highlights">
+          <div class="highlight-card">
+            <div class="icon">&#127891;</div>
+            <h4>6. Semester</h4>
+            <p>Informatik (B.Sc.) – Schwerpunkt Cloud & Mobile Computing & KI-Intelligenter Systemen</p>
+          </div>
+          <div class="highlight-card">
+            <div class="icon">&#128187;</div>
+            <h4>Dev</h4>
+            <p>Next.js, TypeScript, Node.js, Express – von der Datenbank bis zur UI</p>
+          </div>
+          <div class="highlight-card">
+            <div class="icon">&#128202;</div>
+            <h4>Daten & Visualisierung</h4>
+            <p>D3.js, Python, SQL – Daten verstehen und interaktiv darstellen</p>
+          </div>
+          <div class="highlight-card">
+            <div class="icon">&#128640;</div>
+            <h4>Deployment & DevOps</h4>
+            <p>GitHub Pages, Vercel, CI/CD – Projekte schnell und zuverlässig live bringen</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SKILLS ===== -->
+  <section class="section" id="skills">
+    <div class="container">
+      <h2 class="section-title">Fähigkeiten</h2>
+      <p class="section-sub">Technologien & Tools, die ich täglich nutze</p>
+
+      <h3 style="font-size:0.95rem;font-weight:600;margin-bottom:12px;color:var(--text-muted);">Sprachen & Frameworks</h3>
+      <div class="skills-grid" style="margin-bottom:28px;">
+        <span class="skill-badge">Java</span>
+        <span class="skill-badge">TypeScript</span>
+        <span class="skill-badge">JavaScript</span>
+        <span class="skill-badge">Next.js</span>
+        <span class="skill-badge">React</span>
+        <span class="skill-badge">Node.js</span>
+        <span class="skill-badge">HTML & CSS</span>
+        <span class="skill-badge">SQL</span>
+        <span class="skill-badge">Python</span>
+      </div>
+
+      <h3 style="font-size:0.95rem;font-weight:600;margin-bottom:12px;color:var(--text-muted);">Tools & Methoden</h3>
+      <div class="skills-grid">
+        <span class="skill-badge">VS Code</span>
+        <span class="skill-badge">Git & GitHub</span>
+        <span class="skill-badge">Jira</span>
+        <span class="skill-badge">Vercel</span>
+        <span class="skill-badge">Figma</span>
+        <span class="skill-badge">Postgre SQL</span>
+        <span class="skill-badge">Cursor</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROJEKTE ===== -->
+  <section class="section" id="projects">
+    <div class="container">
+      <h2 class="section-title">Projekte</h2>
+      <p class="section-sub">Was ich bisher gebaut habe</p>
+
+      <div class="projects-grid">
+        <!-- Karte 1 -->
+        <div class="project-card">
+          <span class="tag">Full-Stack / E-Commerce</span>
+          <h3>CFC-Fastfood</h3>
+          <p>
+            Online-Bestellplattform für "Cameroon Fried Chicken" mit
+            Echtzeit-Bestellverfolgung (Socket.IO), Mobile Money-Zahlung,
+            Admin-Dashboard und 26 Produkten. Next.js + Express + SQLite.
+          </p>
+          <div class="project-tech">
+            <span>TypeScript</span>
+            <span>Next.js</span>
+            <span>Express</span>
+            <span>SQLite</span>
+            <span>Redux</span>
+          </div>
+          <a href="https://github.com/clement1234514/CFC-Fastfood" class="project-link" target="_blank">Zum Repository &rarr;</a>
+        </div>
+
+        <!-- Karte 2 -->
+        <div class="project-card">
+          <span class="tag">E-Commerce / Design</span>
+          <h3>SuDaGum</h3>
+          <p>
+            Hochprofessionelle E-Commerce-Produktseite für Premium
+            Gummi Arabicum. Modernes Design mit Tailwind CSS,
+            Produktgalerie, B2B-Bereich und Feedback-Formular.
+          </p>
+          <div class="project-tech">
+            <span>TypeScript</span>
+            <span>Next.js</span>
+            <span>Tailwind CSS</span>
+          </div>
+          <a href="https://su-da-gum.vercel.app/" class=project-link" target="_blank">Live ansehen &rarr;</a>
+        </div>
+
+        <!-- Karte 3 -->
+        <div class="project-card">
+          <span class="tag">Datenvisualisierung</span>
+          <h3>Olympia Medaillen</h3>
+          <p>
+            Interaktive Choropleth-Karte der olympischen Medaillen
+            (1996–2024) mit D3.js. Zeigt die erfolgreichsten europäischen
+            Nationen inkl. Deutschland-Vergleich.
+          </p>
+          <div class="project-tech">
+            <span>JavaScript</span>
+            <span>D3.js</span>
+            <span>SVG</span>
+            <span>CSV</span>
+            <span>GeoJSON</span>
+          </div>
+          <a href="https://clement1234514.me/Olympische_Beleg/" class="project-link" target="_blank">Live ansehen &rarr;</a>
+        </div>
+
+        <!-- Karte 4 -->
+        <div class="project-card">
+          <span class="tag">Spiel / JavaScript</span>
+          <h3>Supercode – Mastermind</h3>
+          <p>
+            Moderne JavaScript-Adaption des klassischen Mastermind-Spiels.
+            Einen 4-stelligen Farbcode durch logische Kombinatorik
+            knacken – mit Hilfefunktion, Verlauf und farbigem Feedback.
+          </p>
+          <div class="project-tech">
+            <span>JavaScript</span>
+            <span>HTML</span>
+            <span>CSS</span>
+          </div>
+          <a href="https://clement1234514.me/Supercode/" class="project-link" target="_blank">Live ansehen &rarr;</a>
+        </div>
+
+        <!-- Karte 5 -->
+        <div class="project-card">
+          <span class="tag">Spiel / TypeScript</span>
+          <h3>Sudoku</h3>
+          <p>
+            Vollständiges Sudoku-Spiel mit drei Schwierigkeitsgraden,
+            Notizfunktion und autom. Validierung. Modular in TypeScript
+            mit Vitest-Tests und Vite-Build.
+          </p>
+          <div class="project-tech">
+            <span>TypeScript</span>
+            <span>Vite</span>
+            <span>Vitest</span>
+            <span>OOP</span>
+          </div>
+          <a href="https://github.com/clement1234514/sudoku-project" class="project-link" target="_blank">Zum Repository &rarr;</a>
+        </div>
+
+        <!-- Karte 5 -->
+        <div class="project-card">
+          <span class="tag">Desktop / Java</span>
+          <h3>PizzaPronto</h3>
+          <p>
+            Modulare Java-Anwendung zur Pizzeria-Verwaltung mit
+            Swing-GUI, Bestellabwicklung, Küchensteuerung und
+            JSON-Serialisierung. Klare Schichtenarchitektur.
+          </p>
+          <div class="project-tech">
+            <span>Java</span>
+            <span>Swing</span>
+            <span>JSON</span>
+            <span>OOP</span>
+          </div>
+          <a href="https://github.com/clement1234514/PizzaPronto" class="project-link" target="_blank">Zum Repository &rarr;</a>
+        </div>
+
+        <!-- Karte 6 -->
+        <div class="project-card">
+          <span class="tag">Web-App</span>
+          <h3>BMI-Rechner</h3>
+          <p>
+            Einfacher, responsiver BMI-Rechner in reinem HTML/CSS/JS.
+            Berechnet den Body-Mass-Index und gibt eine farbliche
+            Kategorie-Rückmeldung. Läuft auf GitHub Pages.
+          </p>
+          <div class="project-tech">
+            <span>HTML</span>
+            <span>CSS</span>
+            <span>JavaScript</span>
+          </div>
+          <a href="https://github.com/clement1234514/bmi-js" class="project-link" target="_blank">Live ansehen &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER / KONTAKT ===== -->
+  <footer id="contact">
+    <div class="container footer-inner">
+      <p>&copy; 2026 Clement &middot; Informatik-Student</p>
+      <ul class="footer-links">
+        <li><a href="mailto:yipdiclementjunio@gmail.com" target="_blank">&#9993; E-Mail</a></li>
+        <li><a href="https://github.com/clement1234514" target="_blank">&#128187; GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/clement-yipdi-46a94a309/" target="_blank">&#128100; LinkedIn</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- ===== MOBILE MENU TOGGLE ===== -->
+  <script>
+    const toggle = document.getElementById('navToggle');
+    const links = document.getElementById('navLinks');
+
+    toggle.addEventListener('click', () => {
+      links.classList.toggle('open');
+    });
+
+    // Menü nach Klick auf einen Link schließen
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        links.classList.remove('open');
+      });
+    });
+  </script>
+</body>
+</html>
